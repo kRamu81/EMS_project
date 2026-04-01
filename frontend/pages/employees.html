@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employees – EMS Pro</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:1rem">
+      <span style="font-size:.875rem;color:var(--text-2)">Admin: <strong>Rajesh Kumar</strong></span>
+      <div class="avatar" style="background:#3B6FE4;font-size:.65rem">RK</div>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a></div>
+    <div class="sidebar-section">Main Menu</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"><span class="nav-icon">📊</span>Dashboard</a>
+      <a href="employees.html" class="active"><span class="nav-icon">👥</span>Employees</a>
+      <a href="attendance.html"><span class="nav-icon">📅</span>Attendance</a>
+      <a href="leaves.html"><span class="nav-icon">🌴</span>Leave</a>
+      <a href="salary.html"><span class="nav-icon">💰</span>Payroll</a>
+    </nav>
+    <div class="sidebar-section" style="margin-top:1rem">Settings</div>
+    <nav class="sidebar-nav">
+      <a href="login.html"><span class="nav-icon">🔒</span>Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Employees</h1>
+        <p>Manage all employee records</p>
+      </div>
+      <div class="page-header-actions">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="emp-search" placeholder="Search employees…"/>
+        </div>
+        <select id="dept-filter" style="padding:.5rem .8rem;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:inherit;font-size:.875rem;background:var(--surface);color:var(--text-1)">
+          <option value="">All Departments</option>
+          <option>Engineering</option>
+          <option>Human Resources</option>
+          <option>Finance</option>
+          <option>Marketing</option>
+          <option>Operations</option>
+          <option>Quality Assurance</option>
+        </select>
+        <button class="btn-primary" onclick="openModal('add-emp-modal')">➕ Add Employee</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#EEF2FF;color:#3B6FE4">👥</div>
+        <div><div class="stat-card-num">128</div><div class="stat-card-label">Total Employees</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#ECFDF5;color:#059669">✓</div>
+        <div><div class="stat-card-num">120</div><div class="stat-card-label">Active</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#FFFBEB;color:#D97706">⏸</div>
+        <div><div class="stat-card-num">5</div><div class="stat-card-label">On Leave</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#FEF2F2;color:#DC2626">✕</div>
+        <div><div class="stat-card-num">3</div><div class="stat-card-label">Inactive</div></div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="tbl-wrap">
+      <table id="emp-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>ID</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Email</th>
+            <th>Hire Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="emp-body"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- ADD EMPLOYEE MODAL -->
+<div class="modal-backdrop" id="add-emp-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add New Employee</h3>
+      <button class="modal-close" onclick="closeModal('add-emp-modal')">×</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>First Name *</label><input type="text" id="fn" placeholder="e.g. Ravi"/></div>
+      <div class="form-group"><label>Last Name *</label><input type="text" id="ln" placeholder="e.g. Kumar"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Email *</label><input type="email" id="em" placeholder="ravi.kumar@ems.com"/></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="ph" placeholder="9XXXXXXXXX"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Department *</label>
+        <select id="dept">
+          <option>Engineering</option><option>Human Resources</option>
+          <option>Finance</option><option>Marketing</option>
+          <option>Operations</option><option>Quality Assurance</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Designation *</label>
+        <select id="desig">
+          <option>Software Engineer</option><option>Senior Engineer</option>
+          <option>HR Manager</option><option>Finance Analyst</option>
+          <option>Marketing Executive</option><option>QA Tester</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Hire Date *</label><input type="date" id="hire"/></div>
+      <div class="form-group"><label>Gender</label>
+        <select id="gender"><option>Male</option><option>Female</option><option>Other</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('add-emp-modal')">Cancel</button>
+      <button class="btn-primary" onclick="addEmployee()">Add Employee</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+/* ── SAMPLE DATA ── */
+const employees = [
+  {id:'EMP001',fn:'Rajesh',  ln:'Kumar',  dept:'Human Resources',  desig:'HR Manager',        email:'rajesh.kumar@ems.com',  hire:'2015-01-10',status:'Active'},
+  {id:'EMP002',fn:'Priya',   ln:'Sharma', dept:'Engineering',       desig:'Senior Engineer',   email:'priya.sharma@ems.com',  hire:'2018-03-01',status:'Active'},
+  {id:'EMP003',fn:'Arjun',   ln:'Reddy',  dept:'Engineering',       desig:'Software Engineer', email:'arjun.reddy@ems.com',   hire:'2019-06-15',status:'Active'},
+  {id:'EMP004',fn:'Sneha',   ln:'Patel',  dept:'Finance',           desig:'Finance Analyst',   email:'sneha.patel@ems.com',   hire:'2020-08-01',status:'Inactive'},
+  {id:'EMP005',fn:'Vikram',  ln:'Singh',  dept:'Marketing',         desig:'Marketing Executive',email:'vikram.singh@ems.com', hire:'2016-11-20',status:'Active'},
+  {id:'EMP006',fn:'Anjali',  ln:'Rao',    dept:'Quality Assurance', desig:'QA Tester',         email:'anjali.rao@ems.com',    hire:'2021-01-10',status:'Active'},
+  {id:'EMP007',fn:'Kiran',   ln:'Nair',   dept:'Operations',        desig:'Marketing Executive',email:'kiran.nair@ems.com',   hire:'2017-05-14',status:'On Leave'},
+  {id:'EMP008',fn:'Deepa',   ln:'Menon',  dept:'Engineering',       desig:'Software Engineer', email:'deepa.menon@ems.com',   hire:'2022-03-07',status:'Active'},
+];
+
+const statusClass = {Active:'badge-green','On Leave':'badge-amber',Inactive:'badge-red'};
+let nextId = 9;
+
+function renderTable(data) {
+  const body = document.getElementById('emp-body');
+  body.innerHTML = data.map(e => {
+    const name = `${e.fn} ${e.ln}`;
+    return `<tr>
+      <td style="display:flex;align-items:center;gap:.65rem">${makeAvatar(name)} <div><div style="font-weight:600">${name}</div><div style="font-size:.72rem;color:var(--text-3)">${e.id}</div></div></td>
+      <td style="font-family:monospace;font-size:.8rem;color:var(--text-2)">${e.id}</td>
+      <td>${e.dept}</td>
+      <td>${e.desig}</td>
+      <td style="color:var(--text-2);font-size:.82rem">${e.email}</td>
+      <td>${formatDate(e.hire)}</td>
+      <td><span class="badge ${statusClass[e.status]}">${e.status}</span></td>
+      <td style="display:flex;gap:.4rem">
+        <button class="btn-outline btn-sm" onclick="showToast('Edit coming soon','warning')">✏️</button>
+        <button class="btn-danger btn-sm" onclick="deleteEmployee('${e.id}')">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function addEmployee() {
+  const fn = document.getElementById('fn').value.trim();
+  const ln = document.getElementById('ln').value.trim();
+  const em = document.getElementById('em').value.trim();
+  const hire = document.getElementById('hire').value;
+  if (!fn || !ln || !em || !hire) { showToast('Please fill all required fields','error'); return; }
+  const emp = {
+    id:`EMP${String(nextId++).padStart(3,'0')}`, fn, ln,
+    dept: document.getElementById('dept').value,
+    desig: document.getElementById('desig').value,
+    email: em, hire,
+    status:'Active'
+  };
+  employees.unshift(emp);
+  renderTable(employees);
+  closeModal('add-emp-modal');
+  showToast(`${fn} ${ln} added successfully!`, 'success');
+}
+
+function deleteEmployee(id) {
+  if (!confirm('Delete this employee record?')) return;
+  const idx = employees.findIndex(e => e.id === id);
+  if (idx > -1) { employees.splice(idx,1); renderTable(employees); showToast('Employee removed','error'); }
+}
+
+// Search & filter
+document.getElementById('emp-search').addEventListener('input', applyFilters);
+document.getElementById('dept-filter').addEventListener('change', applyFilters);
+function applyFilters() {
+  const q = document.getElementById('emp-search').value.toLowerCase();
+  const dept = document.getElementById('dept-filter').value;
+  renderTable(employees.filter(e => {
+    const match = `${e.fn} ${e.ln} ${e.email} ${e.dept} ${e.desig}`.toLowerCase().includes(q);
+    const deptMatch = !dept || e.dept === dept;
+    return match && deptMatch;
+  }));
+}
+
+renderTable(employees);
+</script>
+</body>
+</html>

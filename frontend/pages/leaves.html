@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leave Management – EMS Pro</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .tabs { display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1.5rem; }
+    .tab { padding:.6rem 1.25rem;font-size:.875rem;font-weight:500;color:var(--text-2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s; }
+    .tab.active { color:var(--primary);border-bottom-color:var(--primary); }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a>
+    <div style="margin-left:auto"><button class="hamburger" id="hamburger"><span></span><span></span><span></span></button></div>
+  </div>
+</nav>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a></div>
+    <div class="sidebar-section">Main Menu</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"><span class="nav-icon">📊</span>Dashboard</a>
+      <a href="employees.html"><span class="nav-icon">👥</span>Employees</a>
+      <a href="attendance.html"><span class="nav-icon">📅</span>Attendance</a>
+      <a href="leaves.html" class="active"><span class="nav-icon">🌴</span>Leave</a>
+      <a href="salary.html"><span class="nav-icon">💰</span>Payroll</a>
+    </nav>
+  </aside>
+  <main class="main-content">
+    <div class="page-header">
+      <div><h1>Leave Management</h1><p>Review and process employee leave requests</p></div>
+      <div class="page-header-actions">
+        <button class="btn-primary" onclick="openModal('apply-leave-modal')">➕ Apply Leave</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-card-icon" style="background:#FFFBEB;color:#D97706">⏳</div><div><div class="stat-card-num">7</div><div class="stat-card-label">Pending</div></div></div>
+      <div class="stat-card"><div class="stat-card-icon" style="background:#ECFDF5;color:#059669">✓</div><div><div class="stat-card-num">24</div><div class="stat-card-label">Approved</div></div></div>
+      <div class="stat-card"><div class="stat-card-icon" style="background:#FEF2F2;color:#DC2626">✕</div><div><div class="stat-card-num">3</div><div class="stat-card-label">Rejected</div></div></div>
+      <div class="stat-card"><div class="stat-card-icon" style="background:#EEF2FF;color:#3B6FE4">📊</div><div><div class="stat-card-num">34</div><div class="stat-card-label">Total This Month</div></div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('pending')">⏳ Pending (7)</div>
+      <div class="tab" onclick="switchTab('approved')">✅ Approved</div>
+      <div class="tab" onclick="switchTab('all')">📋 All Requests</div>
+    </div>
+
+    <div id="tab-pending" class="tab-content active">
+      <div class="tbl-wrap">
+        <table><thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Reason</th><th>Applied On</th><th>Actions</th></tr></thead>
+        <tbody id="pending-body"></tbody></table>
+      </div>
+    </div>
+
+    <div id="tab-approved" class="tab-content">
+      <div class="tbl-wrap">
+        <table><thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Approved By</th><th>Status</th></tr></thead>
+        <tbody id="approved-body"></tbody></table>
+      </div>
+    </div>
+
+    <div id="tab-all" class="tab-content">
+      <div class="tbl-wrap">
+        <table><thead><tr><th>Employee</th><th>Type</th><th>Period</th><th>Days</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="all-body"></tbody></table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- APPLY LEAVE MODAL -->
+<div class="modal-backdrop" id="apply-leave-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Apply for Leave</h3>
+      <button class="modal-close" onclick="closeModal('apply-leave-modal')">×</button>
+    </div>
+    <div class="form-group"><label>Employee *</label>
+      <select id="leave-emp">
+        <option>Rajesh Kumar</option><option>Priya Sharma</option><option>Arjun Reddy</option>
+        <option>Sneha Patel</option><option>Vikram Singh</option><option>Anjali Rao</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Leave Type *</label>
+        <select id="leave-type"><option>Sick</option><option>Casual</option><option>Earned</option><option>Unpaid</option></select>
+      </div>
+      <div class="form-group"><label>Number of Days</label><input type="number" id="leave-days" value="1" min="1"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>From Date *</label><input type="date" id="leave-from"/></div>
+      <div class="form-group"><label>To Date *</label><input type="date" id="leave-to"/></div>
+    </div>
+    <div class="form-group"><label>Reason</label><textarea id="leave-reason" rows="3" placeholder="Brief reason for leave…"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('apply-leave-modal')">Cancel</button>
+      <button class="btn-primary" onclick="submitLeave()">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+const leaveData = [
+  {name:'Arjun Reddy',  type:'Sick',   from:'2024-06-10',to:'2024-06-11',days:2,reason:'Fever and cold',        applied:'2024-06-08',status:'Pending', approver:'—'},
+  {name:'Sneha Patel',  type:'Casual', from:'2024-06-12',to:'2024-06-12',days:1,reason:'Personal work',         applied:'2024-06-09',status:'Pending', approver:'—'},
+  {name:'Priya Sharma', type:'Earned', from:'2024-06-20',to:'2024-06-25',days:6,reason:'Family vacation',        applied:'2024-06-10',status:'Pending', approver:'—'},
+  {name:'Anjali Rao',   type:'Sick',   from:'2024-06-08',to:'2024-06-09',days:2,reason:'Hospitalization',        applied:'2024-06-07',status:'Approved',approver:'Rajesh Kumar'},
+  {name:'Kiran Nair',   type:'Casual', from:'2024-06-15',to:'2024-06-15',days:1,reason:'Bank work',              applied:'2024-06-13',status:'Rejected',approver:'Rajesh Kumar'},
+  {name:'Deepa Menon',  type:'Earned', from:'2024-07-01',to:'2024-07-05',days:5,reason:'Wedding attendance',     applied:'2024-06-15',status:'Pending', approver:'—'},
+  {name:'Vikram Singh', type:'Casual', from:'2024-06-18',to:'2024-06-18',days:1,reason:'Home emergency',         applied:'2024-06-17',status:'Approved',approver:'Rajesh Kumar'},
+];
+
+const typeColor={Sick:'badge-red',Casual:'badge-blue',Earned:'badge-purple',Unpaid:'badge-gray'};
+const statColor={Pending:'badge-amber',Approved:'badge-green',Rejected:'badge-red'};
+
+function renderPending() {
+  const b = document.getElementById('pending-body');
+  const items = leaveData.filter(l=>l.status==='Pending');
+  b.innerHTML = items.map(l => `<tr>
+    <td style="display:flex;align-items:center;gap:.5rem">${makeAvatar(l.name,28)}<span>${l.name}</span></td>
+    <td><span class="badge ${typeColor[l.type]}">${l.type}</span></td>
+    <td>${formatDate(l.from)}</td><td>${formatDate(l.to)}</td>
+    <td><strong>${l.days}</strong></td>
+    <td style="max-width:160px;font-size:.82rem;color:var(--text-2)">${l.reason}</td>
+    <td style="font-size:.78rem;color:var(--text-3)">${formatDate(l.applied)}</td>
+    <td style="display:flex;gap:.4rem">
+      <button class="btn-primary btn-sm" onclick="approveLeave('${l.name}')">✓ Approve</button>
+      <button class="btn-danger btn-sm" onclick="rejectLeave('${l.name}')">✕ Reject</button>
+    </td>
+  </tr>`).join('');
+}
+
+function renderApproved() {
+  const b = document.getElementById('approved-body');
+  b.innerHTML = leaveData.filter(l=>l.status==='Approved').map(l=>`<tr>
+    <td style="display:flex;align-items:center;gap:.5rem">${makeAvatar(l.name,28)}<span>${l.name}</span></td>
+    <td><span class="badge ${typeColor[l.type]}">${l.type}</span></td>
+    <td>${formatDate(l.from)}</td><td>${formatDate(l.to)}</td>
+    <td>${l.days}</td><td>${l.approver}</td>
+    <td><span class="badge badge-green">Approved</span></td>
+  </tr>`).join('');
+}
+
+function renderAll() {
+  const b = document.getElementById('all-body');
+  b.innerHTML = leaveData.map(l=>`<tr>
+    <td>${l.name}</td>
+    <td><span class="badge ${typeColor[l.type]}">${l.type}</span></td>
+    <td style="font-size:.82rem">${formatDate(l.from)} – ${formatDate(l.to)}</td>
+    <td>${l.days}</td>
+    <td><span class="badge ${statColor[l.status]}">${l.status}</span></td>
+    <td><button class="btn-outline btn-sm" onclick="showToast('Details coming soon','warning')">View</button></td>
+  </tr>`).join('');
+}
+
+function approveLeave(name) {
+  const l = leaveData.find(x=>x.name===name);
+  if(l){l.status='Approved';l.approver='Rajesh Kumar';}
+  renderPending();renderApproved();renderAll();
+  showToast(`${name}'s leave approved ✓`,'success');
+}
+function rejectLeave(name) {
+  const l = leaveData.find(x=>x.name===name);
+  if(l){l.status='Rejected';}
+  renderPending();renderApproved();renderAll();
+  showToast(`${name}'s leave rejected`,'error');
+}
+
+function submitLeave() {
+  const emp = document.getElementById('leave-emp').value;
+  const from = document.getElementById('leave-from').value;
+  const to   = document.getElementById('leave-to').value;
+  if (!from||!to) { showToast('Please fill dates','error'); return; }
+  leaveData.unshift({name:emp,type:document.getElementById('leave-type').value,
+    from,to,days:parseInt(document.getElementById('leave-days').value)||1,
+    reason:document.getElementById('leave-reason').value||'—',
+    applied:new Date().toISOString().split('T')[0],status:'Pending',approver:'—'});
+  renderPending();renderAll();
+  closeModal('apply-leave-modal');
+  showToast('Leave application submitted!','success');
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i)=>{t.classList.remove('active');});
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  const tabEl = document.querySelector(`.tab:nth-child(${name==='pending'?1:name==='approved'?2:3})`);
+  if(tabEl) tabEl.classList.add('active');
+  document.getElementById(`tab-${name}`)?.classList.add('active');
+}
+
+renderPending(); renderApproved(); renderAll();
+
+// Set default dates
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('leave-from').value = today;
+document.getElementById('leave-to').value = today;
+</script>
+</body>
+</html>

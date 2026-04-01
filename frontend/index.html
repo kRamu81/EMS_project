@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMS Pro – Employee Management System</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/landing.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">EMS</span><span class="logo-sub">Pro</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="pages/dashboard.html">Dashboard</a></li>
+      <li><a href="pages/employees.html">Employees</a></li>
+      <li><a href="pages/attendance.html">Attendance</a></li>
+      <li><a href="pages/leaves.html">Leave</a></li>
+      <li><a href="pages/salary.html">Payroll</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="pages/login.html" class="btn-outline">Sign In</a>
+      <a href="pages/dashboard.html" class="btn-primary">Get Started</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ───────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🚀 Full-Stack HR Platform</div>
+    <h1 class="hero-title">
+      Manage your <em>entire</em><br/>workforce, effortlessly.
+    </h1>
+    <p class="hero-sub">
+      A modern Employee Management System built with Spring Boot & React.
+      Streamline HR operations, track attendance, manage payroll, and more — all in one place.
+    </p>
+    <div class="hero-btns">
+      <a href="pages/dashboard.html" class="btn-primary btn-lg">View Dashboard →</a>
+      <a href="pages/employees.html" class="btn-ghost btn-lg">Explore Features</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">6+</span><span class="stat-label">Core Modules</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Role-Based Access</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-num">MySQL</span><span class="stat-label">Powered Backend</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="dashboard-preview">
+      <div class="preview-topbar">
+        <div class="preview-dots"><span></span><span></span><span></span></div>
+        <span class="preview-title">EMS Dashboard</span>
+      </div>
+      <div class="preview-body">
+        <div class="preview-sidebar">
+          <div class="ps-item active">📊 Dashboard</div>
+          <div class="ps-item">👥 Employees</div>
+          <div class="ps-item">📅 Attendance</div>
+          <div class="ps-item">🌴 Leave</div>
+          <div class="ps-item">💰 Payroll</div>
+        </div>
+        <div class="preview-main">
+          <div class="pm-row">
+            <div class="pm-card blue"><div class="pm-num">128</div><div class="pm-lbl">Employees</div></div>
+            <div class="pm-card green"><div class="pm-num">94%</div><div class="pm-lbl">Present Today</div></div>
+          </div>
+          <div class="pm-row">
+            <div class="pm-card amber"><div class="pm-num">7</div><div class="pm-lbl">Leaves Pending</div></div>
+            <div class="pm-card purple"><div class="pm-num">₹2.4M</div><div class="pm-lbl">Monthly Payroll</div></div>
+          </div>
+          <div class="pm-bar-wrap">
+            <div class="pm-bar" style="width:88%"></div>
+            <div class="pm-bar" style="width:65%"></div>
+            <div class="pm-bar" style="width:92%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ───────────────────────────────────────────────── -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-label">Everything You Need</div>
+    <h2 class="section-title">One platform for all your HR needs</h2>
+    <p class="section-sub">From hiring to payroll, manage every HR workflow in a single, unified system.</p>
+
+    <div class="features-grid">
+
+      <div class="feat-card" data-delay="0">
+        <div class="feat-icon" style="background:#EEF2FF; color:#4F46E5;">👥</div>
+        <h3>Employee Records</h3>
+        <p>Centralized database for all employee personal and professional information with instant search and filters.</p>
+        <a href="pages/employees.html" class="feat-link">Explore →</a>
+      </div>
+
+      <div class="feat-card" data-delay="100">
+        <div class="feat-icon" style="background:#ECFDF5; color:#059669;">📅</div>
+        <h3>Attendance Tracking</h3>
+        <p>Real-time check-in/check-out, daily summaries, monthly reports, and automated absence detection.</p>
+        <a href="pages/attendance.html" class="feat-link">Explore →</a>
+      </div>
+
+      <div class="feat-card" data-delay="200">
+        <div class="feat-icon" style="background:#FFF7ED; color:#D97706;">🌴</div>
+        <h3>Leave Management</h3>
+        <p>Apply, approve, and track leaves with multi-level approval workflows and leave balance management.</p>
+        <a href="pages/leaves.html" class="feat-link">Explore →</a>
+      </div>
+
+      <div class="feat-card" data-delay="300">
+        <div class="feat-icon" style="background:#FDF4FF; color:#9333EA;">💰</div>
+        <h3>Payroll Management</h3>
+        <p>Automated salary computation with allowances, deductions, and net pay — complete payslip generation.</p>
+        <a href="pages/salary.html" class="feat-link">Explore →</a>
+      </div>
+
+      <div class="feat-card" data-delay="400">
+        <div class="feat-icon" style="background:#EFF6FF; color:#2563EB;">🔒</div>
+        <h3>Role-Based Access</h3>
+        <p>Admin and HR Manager roles with granular permissions ensuring data security and compliance.</p>
+        <a href="pages/login.html" class="feat-link">Explore →</a>
+      </div>
+
+      <div class="feat-card" data-delay="500">
+        <div class="feat-icon" style="background:#FFF1F2; color:#E11D48;">📊</div>
+        <h3>Analytics Dashboard</h3>
+        <p>Real-time insights with headcount, attendance trends, department-wise salary costs, and more.</p>
+        <a href="pages/dashboard.html" class="feat-link">Explore →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ────────────────────────────────────────────── -->
+<section class="how-it-works">
+  <div class="container">
+    <div class="section-label">Simple Workflow</div>
+    <h2 class="section-title">Get started in minutes</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Set Up Departments</h4>
+        <p>Create your org structure with departments, designations, and locations.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>Add Employees</h4>
+        <p>Onboard employees with all their personal and professional details.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Track Daily Activity</h4>
+        <p>Log attendance, process leave requests, and manage day-to-day HR tasks.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h4>Run Payroll</h4>
+        <p>Generate monthly salary reports with a single click.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>Ready to streamline your HR operations?</h2>
+    <p>Built with Spring Boot · React · MySQL · RESTful APIs</p>
+    <a href="pages/dashboard.html" class="btn-primary btn-lg">Open Dashboard →</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="logo-mark">EMS</span><span class="logo-sub">Pro</span>
+      <p>A final year project by Blackbuck Engineers Pvt. Ltd.</p>
+    </div>
+    <div class="footer-links">
+      <div class="fl-col">
+        <h5>Modules</h5>
+        <a href="pages/dashboard.html">Dashboard</a>
+        <a href="pages/employees.html">Employees</a>
+        <a href="pages/attendance.html">Attendance</a>
+        <a href="pages/leaves.html">Leave</a>
+        <a href="pages/salary.html">Payroll</a>
+      </div>
+      <div class="fl-col">
+        <h5>Tech Stack</h5>
+        <a href="#">Spring Boot</a>
+        <a href="#">React.js</a>
+        <a href="#">MySQL</a>
+        <a href="#">JPA/Hibernate</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 EMS Pro · Employee Management System · Final Year Project</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

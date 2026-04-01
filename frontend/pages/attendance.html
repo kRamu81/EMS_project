@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance – EMS Pro</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .calendar-grid { display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:1rem; }
+    .cal-header { text-align:center;font-size:.72rem;font-weight:700;color:var(--text-3);padding:.4rem 0;text-transform:uppercase;letter-spacing:.06em; }
+    .cal-day { aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);font-size:.8rem;cursor:pointer;transition:background .15s;border:1px solid transparent; }
+    .cal-day:hover { background:var(--surface-2); }
+    .cal-day.present { background:var(--green-light);color:var(--green);font-weight:600; }
+    .cal-day.absent  { background:var(--red-light);color:var(--red); }
+    .cal-day.half    { background:var(--amber-light);color:var(--amber); }
+    .cal-day.leave   { background:var(--primary-light);color:var(--primary); }
+    .cal-day.today   { border-color:var(--primary);font-weight:700; }
+    .cal-day.empty   { opacity:0; cursor:default; }
+    .summary-pills { display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem; }
+    .pill { padding:.35rem .9rem;border-radius:99px;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.4rem; }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a>
+    <div style="margin-left:auto"><button class="hamburger" id="hamburger"><span></span><span></span><span></span></button></div>
+  </div>
+</nav>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a></div>
+    <div class="sidebar-section">Main Menu</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"><span class="nav-icon">📊</span>Dashboard</a>
+      <a href="employees.html"><span class="nav-icon">👥</span>Employees</a>
+      <a href="attendance.html" class="active"><span class="nav-icon">📅</span>Attendance</a>
+      <a href="leaves.html"><span class="nav-icon">🌴</span>Leave</a>
+      <a href="salary.html"><span class="nav-icon">💰</span>Payroll</a>
+    </nav>
+  </aside>
+  <main class="main-content">
+    <div class="page-header">
+      <div><h1>Attendance</h1><p>Track and manage daily employee attendance</p></div>
+      <div class="page-header-actions">
+        <input type="date" id="att-date" style="padding:.5rem .8rem;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:inherit;font-size:.875rem"/>
+        <button class="btn-primary" onclick="showToast('Attendance saved!','success')">💾 Save Attendance</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-card-icon" style="background:#ECFDF5;color:#059669">✓</div><div><div class="stat-card-num">112</div><div class="stat-card-label">Present</div></div></div>
+      <div class="stat-card"><div class="stat-card-icon" style="background:#FEF2F2;color:#DC2626">✕</div><div><div class="stat-card-num">6</div><div class="stat-card-label">Absent</div></div></div>
+      <div class="stat-card"><div class="stat-card-icon" style="background:#FFFBEB;color:#D97706">½</div><div><div class="stat-card-num">5</div><div class="stat-card-label">Half Day</div></div></div>
+      <div class="stat-card"><div class="stat-card-icon" style="background:#EEF2FF;color:#3B6FE4">🌴</div><div><div class="stat-card-num">5</div><div class="stat-card-label">On Leave</div></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:1.5rem">
+      <!-- ATTENDANCE TABLE -->
+      <div class="tbl-wrap">
+        <table id="att-table">
+          <thead><tr><th>Employee</th><th>Check In</th><th>Check Out</th><th>Status</th><th>Remarks</th><th>Action</th></tr></thead>
+          <tbody id="att-body"></tbody>
+        </table>
+      </div>
+
+      <!-- MINI CALENDAR -->
+      <div class="card" style="padding:1.25rem">
+        <h3 style="font-size:.95rem;margin-bottom:.75rem;font-family:DM Sans,sans-serif">📅 June 2024</h3>
+        <div class="summary-pills">
+          <div class="pill" style="background:var(--green-light);color:var(--green)">● Present</div>
+          <div class="pill" style="background:var(--red-light);color:var(--red)">● Absent</div>
+          <div class="pill" style="background:var(--amber-light);color:var(--amber)">● Half</div>
+        </div>
+        <div class="calendar-grid" id="mini-cal"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+document.getElementById('att-date').value = new Date().toISOString().split('T')[0];
+
+// Sample attendance data
+const attendance = [
+  {name:'Rajesh Kumar',  in:'09:00',out:'18:00',status:'Present',remark:'—'},
+  {name:'Priya Sharma',  in:'09:15',out:'18:10',status:'Present',remark:'—'},
+  {name:'Arjun Reddy',   in:'09:05',out:'17:55',status:'Present',remark:'—'},
+  {name:'Sneha Patel',   in:'—',    out:'—',    status:'Absent', remark:'No notification'},
+  {name:'Vikram Singh',  in:'09:30',out:'14:00',status:'Half Day',remark:'Doctor visit'},
+  {name:'Anjali Rao',    in:'08:55',out:'18:00',status:'Present',remark:'—'},
+  {name:'Kiran Nair',    in:'—',    out:'—',    status:'Leave',  remark:'Approved leave'},
+  {name:'Deepa Menon',   in:'09:10',out:'18:05',status:'Present',remark:'—'},
+];
+
+const attBadge={Present:'badge-green',Absent:'badge-red','Half Day':'badge-amber',Leave:'badge-blue'};
+const body = document.getElementById('att-body');
+attendance.forEach(a => {
+  const s = document.createElement('select');
+  s.style.cssText='border:1.5px solid var(--border);border-radius:4px;padding:.25rem .4rem;font-family:inherit;font-size:.8rem';
+  ['Present','Absent','Half Day','Leave'].forEach(opt => {
+    const o = document.createElement('option');
+    o.value=o.textContent=opt; if(opt===a.status) o.selected=true;
+    s.appendChild(o);
+  });
+  const tr = document.createElement('tr');
+  tr.innerHTML=`<td style="display:flex;align-items:center;gap:.5rem">${makeAvatar(a.name,28)}<span>${a.name}</span></td>
+    <td style="font-family:monospace;font-size:.85rem">${a.in}</td>
+    <td style="font-family:monospace;font-size:.85rem">${a.out}</td>
+    <td><span class="badge ${attBadge[a.status]}">${a.status}</span></td>
+    <td style="color:var(--text-2);font-size:.82rem">${a.remark}</td>
+    <td class="action-cell"></td>`;
+  const btn = document.createElement('button');
+  btn.className='btn-primary btn-sm';
+  btn.textContent='Save';
+  btn.onclick=()=>showToast(`${a.name} updated!`,'success');
+  tr.querySelector('.action-cell').appendChild(s);
+  body.appendChild(tr);
+});
+
+// Mini calendar
+const days=['Mo','Tu','We','Th','Fr','Sa','Su'];
+const cal=document.getElementById('mini-cal');
+days.forEach(d=>{const h=document.createElement('div');h.className='cal-header';h.textContent=d;cal.appendChild(h);});
+// June 2024 starts on Saturday (index 5)
+for(let i=0;i<5;i++){const e=document.createElement('div');e.className='cal-day empty';e.textContent='';cal.appendChild(e);}
+const dayStatus=['present','present','present','absent','half','present','leave','present','present','present','present','present','absent','leave','present','present','present','half','present','present','present','present','present','present','present','present','absent','leave','present','present'];
+for(let d=1;d<=30;d++){
+  const el=document.createElement('div');
+  el.className='cal-day '+(dayStatus[d-1]||'');
+  if(d===3) el.classList.add('today');
+  el.textContent=d;
+  el.title=dayStatus[d-1];
+  cal.appendChild(el);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – EMS Pro</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem; }
+    .chart-card h3 { font-size: 1rem; margin-bottom: 1.25rem; color: var(--text-2); font-family: 'DM Sans',sans-serif; font-weight: 600; }
+    .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 120px; }
+    .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bar { width: 100%; background: var(--primary); border-radius: 4px 4px 0 0; transition: height .5s ease; min-height: 4px; }
+    .bar.green { background: var(--green); }
+    .bar-lbl { font-size: .65rem; color: var(--text-3); margin-top: 4px; }
+    .donut-wrap { display: flex; align-items: center; gap: 1.5rem; }
+    .donut-svg { width: 100px; height: 100px; flex-shrink: 0; }
+    .donut-legend { display: flex; flex-direction: column; gap: .5rem; }
+    .dl-item { display: flex; align-items: center; gap: .5rem; font-size: .8rem; }
+    .dl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .recent-list { display: flex; flex-direction: column; gap: .75rem; }
+    .rl-item { display: flex; align-items: center; gap: .75rem; padding: .75rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-2); }
+    .rl-info { flex: 1; }
+    .rl-name { font-size: .875rem; font-weight: 600; }
+    .rl-sub  { font-size: .75rem; color: var(--text-3); }
+    .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .qa-btn { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; transition: box-shadow .2s, transform .2s; color: var(--text-1); font-size: .8rem; font-weight: 500; text-align: center; }
+    .qa-btn:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .qa-icon { font-size: 1.4rem; }
+    @media(max-width:768px) { .charts-row { grid-template-columns: 1fr; } .quick-actions { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:1rem">
+      <span style="font-size:.875rem;color:var(--text-2)">Welcome, <strong>Rajesh Kumar</strong></span>
+      <div class="avatar" style="background:#3B6FE4;font-size:.65rem">RK</div>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="app-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><a href="../index.html" class="logo"><span class="logo-mark">EMS</span><span class="logo-sub">Pro</span></a></div>
+    <div class="sidebar-section">Main Menu</div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="active"><span class="nav-icon">📊</span>Dashboard</a>
+      <a href="employees.html"><span class="nav-icon">👥</span>Employees</a>
+      <a href="attendance.html"><span class="nav-icon">📅</span>Attendance</a>
+      <a href="leaves.html"><span class="nav-icon">🌴</span>Leave</a>
+      <a href="salary.html"><span class="nav-icon">💰</span>Payroll</a>
+    </nav>
+    <div class="sidebar-section" style="margin-top:1rem">Settings</div>
+    <nav class="sidebar-nav">
+      <a href="login.html"><span class="nav-icon">🔒</span>Logout</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Overview of your organization — <span id="today-date"></span></p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn-primary" onclick="showToast('Report generated!','success')">📥 Export Report</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#EEF2FF;color:#3B6FE4;">👥</div>
+        <div>
+          <div class="stat-card-num">128</div>
+          <div class="stat-card-label">Total Employees</div>
+          <div class="stat-card-delta delta-up">▲ 4 this month</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#ECFDF5;color:#059669;">✓</div>
+        <div>
+          <div class="stat-card-num">112</div>
+          <div class="stat-card-label">Present Today</div>
+          <div class="stat-card-delta delta-up">▲ 94.2%</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#FFFBEB;color:#D97706;">🌴</div>
+        <div>
+          <div class="stat-card-num">7</div>
+          <div class="stat-card-label">Leave Pending</div>
+          <div class="stat-card-delta delta-dn">▼ 2 urgent</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#F5F3FF;color:#7C3AED;">₹</div>
+        <div>
+          <div class="stat-card-num">₹24.8L</div>
+          <div class="stat-card-label">Monthly Payroll</div>
+          <div class="stat-card-delta delta-up">▲ ₹1.2L vs last month</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-actions">
+      <a href="employees.html" class="qa-btn"><span class="qa-icon">➕</span>Add Employee</a>
+      <a href="attendance.html" class="qa-btn"><span class="qa-icon">📋</span>Mark Attendance</a>
+      <a href="leaves.html" class="qa-btn"><span class="qa-icon">✅</span>Approve Leave</a>
+      <a href="salary.html" class="qa-btn"><span class="qa-icon">💸</span>Run Payroll</a>
+    </div>
+
+    <!-- CHARTS ROW -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <h3>📊 Attendance This Week</h3>
+        <div class="bar-chart" id="attendance-chart"></div>
+      </div>
+      <div class="chart-card">
+        <h3>🏢 Employees by Department</h3>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#EEF2FF" stroke-width="3"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3B6FE4" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="-90" stroke-linecap="round"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#059669" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="-50" stroke-linecap="round"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#D97706" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="-25" stroke-linecap="round"/>
+            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7C3AED" stroke-width="3" stroke-dasharray="15 85" stroke-dashoffset="-5" stroke-linecap="round"/>
+          </svg>
+          <div class="donut-legend">
+            <div class="dl-item"><div class="dl-dot" style="background:#3B6FE4"></div><span>Engineering <strong>40%</strong></span></div>
+            <div class="dl-item"><div class="dl-dot" style="background:#059669"></div><span>HR <strong>25%</strong></span></div>
+            <div class="dl-item"><div class="dl-dot" style="background:#D97706"></div><span>Finance <strong>20%</strong></span></div>
+            <div class="dl-item"><div class="dl-dot" style="background:#7C3AED"></div><span>Others <strong>15%</strong></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <h3>🕐 Recent Activity</h3>
+        <div class="recent-list" id="recent-list"></div>
+      </div>
+      <div class="chart-card">
+        <h3>🌴 Pending Leave Requests</h3>
+        <div class="tbl-wrap">
+          <table id="leaves-mini">
+            <thead><tr><th>Employee</th><th>Type</th><th>Days</th><th>Action</th></tr></thead>
+            <tbody id="leaves-mini-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+// Date
+document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// Bar chart
+const attendanceData = [
+  {day:'Mon',p:96},{day:'Tue',p:88},{day:'Wed',p:94},{day:'Thu',p:91},{day:'Fri',p:82},{day:'Sat',p:60},{day:'Sun',p:10}
+];
+const chart = document.getElementById('attendance-chart');
+attendanceData.forEach(d => {
+  const g = document.createElement('div');
+  g.className = 'bar-group';
+  g.innerHTML = `<div class="bar${d.p<70?' green':''}" style="height:${d.p*1.2}px;max-height:120px"></div><span class="bar-lbl">${d.day}</span>`;
+  chart.appendChild(g);
+});
+
+// Recent activity
+const activities = [
+  {icon:'👤',name:'Arjun Reddy',sub:'Checked in at 09:05 AM',time:'2m ago'},
+  {icon:'🌴',name:'Sneha Patel',sub:'Applied for Sick Leave (2 days)',time:'15m ago'},
+  {icon:'✅',name:'Rajesh Kumar',sub:'Approved leave for Anjali Rao',time:'1h ago'},
+  {icon:'➕',name:'Rohit Verma',sub:'New employee added to Engineering',time:'3h ago'},
+];
+const rl = document.getElementById('recent-list');
+activities.forEach(a => {
+  rl.innerHTML += `<div class="rl-item">
+    <div class="avatar" style="background:var(--primary-light);font-size:1.1rem;color:var(--primary)">${a.icon}</div>
+    <div class="rl-info"><div class="rl-name">${a.name}</div><div class="rl-sub">${a.sub}</div></div>
+    <span style="font-size:.72rem;color:var(--text-3);flex-shrink:0">${a.time}</span>
+  </div>`;
+});
+
+// Pending leaves mini table
+const pendingLeaves = [
+  {name:'Deepa Menon',type:'Earned',days:5},
+  {name:'Kiran Nair', type:'Casual',days:1},
+  {name:'Arjun Reddy',type:'Sick',  days:2},
+];
+const lb = document.getElementById('leaves-mini-body');
+pendingLeaves.forEach(l => {
+  lb.innerHTML += `<tr>
+    <td>${makeAvatar(l.name,28)} <span style="margin-left:.5rem">${l.name}</span></td>
+    <td><span class="badge badge-amber">${l.type}</span></td>
+    <td>${l.days}</td>
+    <td style="display:flex;gap:.4rem">
+      <button class="btn-primary btn-sm" onclick="showToast('${l.name} approved ✓','success')">✓</button>
+      <button class="btn-danger btn-sm" onclick="showToast('${l.name} rejected','error')">✕</button>
+    </td>
+  </tr>`;
+});
+</script>
+</body>
+</html>
